@@ -791,6 +791,17 @@ input.bad, textarea.bad { border-color: var(--danger) !important; }
   transition: color .16s ease, opacity .16s ease;
 }
 .master-fingerprint-arrow.is-disabled { visibility: hidden; opacity: 0; }
+/* The derived card and its arrow appear only once a passphrase is entered. */
+.master-fingerprint-arrow[hidden], .master-fingerprint-derived[hidden] { display: none; }
+@keyframes master-fingerprint-fade-in { from { opacity: 0 } to { opacity: 1 } }
+.master-fingerprint-arrow:not([hidden]), .master-fingerprint-derived:not([hidden]) {
+  animation: master-fingerprint-fade-in .22s ease both;
+}
+@keyframes master-fingerprint-fade-out { from { opacity: 1 } to { opacity: 0 } }
+.master-fingerprint-arrow.is-fading-out, .master-fingerprint-derived.is-fading-out {
+  animation: master-fingerprint-fade-out .22s ease both;
+  pointer-events: none;
+}
 .key-settings { display: grid; gap: var(--space-component); margin-top: var(--space-section); }
 .key-settings-row {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-component);

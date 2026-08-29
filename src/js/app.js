@@ -4924,6 +4924,27 @@ function hodlSetMasterFingerprintCard(card, valueNode, value, imageNode) {
   card.setAttribute("aria-label", available ? `${label}: ${value}` : `${label} unavailable`);
   return available;
 }
+// Shows or hides one of the passphrase preview elements, letting it fade out
+// before it leaves the layout rather than vanishing mid-animation.
+var hodlFingerprintFadeMs = 220;
+function hodlFadeFingerprintCard(node, show) {
+  if (show) {
+    if (node.hodlFadeTimer) {
+      clearTimeout(node.hodlFadeTimer);
+      node.hodlFadeTimer = 0;
+    }
+    node.classList.remove("is-fading-out");
+    node.hidden = false;
+    return;
+  }
+  if (node.hidden || node.hodlFadeTimer) return;
+  node.classList.add("is-fading-out");
+  node.hodlFadeTimer = setTimeout(() => {
+    node.hodlFadeTimer = 0;
+    node.classList.remove("is-fading-out");
+    node.hidden = true;
+  }, hodlFingerprintFadeMs);
+}
 function hodlRenderMasterFingerprintPreview(revision = hodlMasterFingerprintRevision) {
   if (revision !== hodlMasterFingerprintRevision) return;
   let preview = document.getElementById("master-fingerprint-preview"), baseCard = document.getElementById("base-master-fingerprint-card"), base = document.getElementById("base-master-fingerprint"), baseImage = document.getElementById("base-master-fingerprint-lifehash"), arrow = document.getElementById("master-fingerprint-arrow"), derivedCard = document.getElementById("passphrase-master-fingerprint-card"), derived = document.getElementById("passphrase-master-fingerprint"), derivedImage = document.getElementById("passphrase-master-fingerprint-lifehash"), pass = document.getElementById("pass");
@@ -4933,8 +4954,11 @@ function hodlRenderMasterFingerprintPreview(revision = hodlMasterFingerprintRevi
     return;
   }
   preview.hidden = false;
-  arrow.hidden = false;
-  derivedCard.hidden = false;
+  // The derived card only means something once a passphrase exists, so it and
+  // its arrow stay out of the layout until one is typed.
+  let hasPassphrase = pass.value.length > 0;
+  hodlFadeFingerprintCard(arrow, hasPassphrase);
+  hodlFadeFingerprintCard(derivedCard, hasPassphrase);
   let clear = () => {
     hodlSetMasterFingerprintCard(baseCard, base, "", baseImage);
     hodlSetMasterFingerprintCard(derivedCard, derived, "", derivedImage);

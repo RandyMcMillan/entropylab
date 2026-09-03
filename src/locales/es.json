@@ -26,7 +26,7 @@
   "beta.disclaimerText": "EntropyLab es experimental y solo debe usarse para pruebas y fines educativos. Esta herramienta está pensada para uso sin conexión y solo por usuarios avanzados. Usarla en línea o con fondos reales puede ser peligroso.",
   "beta.understand": "Entiendo",
   "noscript.banner": "<strong>Se requiere JavaScript</strong> EntropyLab realiza los cálculos de la billetera de forma local en el navegador. Con JavaScript desactivado, la calculadora no puede derivar claves ni direcciones. Activa JavaScript y luego ejecuta este archivo sin conexión en una computadora aislada de internet.",
-  "online.banner": "<strong>Versión en línea</strong> No ingreses frases semilla, claves privadas ni otros secretos de la billetera en un dispositivo conectado a internet. <a href=\"entropylab.html\" download=\"entropylab@{{COMMIT_SHORT}}.html\">Descarga EntropyLab</a> y ejecuta el archivo HTML sin conexión en una computadora de confianza, aislada de internet.",
+  "online.banner": "<strong>Versión en línea</strong> No ingreses frases semilla, claves privadas ni otros secretos de la billetera en un dispositivo conectado a internet. <a href=\"entropylab.html\" download=\"entropylab.html\">Descarga EntropyLab</a> y ejecuta el archivo HTML sin conexión en una computadora de confianza, aislada de internet.",
   "online.dismissAria": "Descartar la advertencia de la versión en línea",
   "pitch.kicker": "Ejecuta sin conexión · Trae tu propia entropía",
   "pitch.title": "Guarda o recibe bitcoin sin un dispositivo de firma.",

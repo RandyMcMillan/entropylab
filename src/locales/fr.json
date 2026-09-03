@@ -26,7 +26,7 @@
   "beta.disclaimerText": "EntropyLab est expérimental et ne doit être utilisé qu'à des fins de test et d'éducation. Cet outil est destiné à un usage hors ligne par des utilisateurs avancés uniquement. Toute utilisation en ligne ou avec des fonds réels peut être dangereuse.",
   "beta.understand": "J'ai compris",
   "noscript.banner": "<strong>JavaScript est requis</strong> EntropyLab effectue les calculs de portefeuille localement dans votre navigateur. Sans JavaScript, la calculatrice ne peut pas dériver les clés ni les adresses. Activez JavaScript, puis exécutez ce fichier hors ligne sur un ordinateur isolé du réseau.",
-  "online.banner": "<strong>Version en ligne</strong> N'entrez pas de phrases secrètes, de clés privées ou d'autres secrets de portefeuille sur un appareil connecté à Internet. <a href=\"entropylab.html\" download=\"entropylab@{{COMMIT_SHORT}}.html\">Téléchargez EntropyLab</a> et exécutez le fichier HTML hors ligne sur un ordinateur de confiance, isolé du réseau.",
+  "online.banner": "<strong>Version en ligne</strong> N'entrez pas de phrases secrètes, de clés privées ou d'autres secrets de portefeuille sur un appareil connecté à Internet. <a href=\"entropylab.html\" download=\"entropylab.html\">Téléchargez EntropyLab</a> et exécutez le fichier HTML hors ligne sur un ordinateur de confiance, isolé du réseau.",
   "online.dismissAria": "Fermer l'avertissement de version en ligne",
   "pitch.kicker": "Exécutez hors ligne · Apportez votre propre entropie",
   "pitch.title": "Détenez ou recevez du bitcoin sans appareil de signature.",

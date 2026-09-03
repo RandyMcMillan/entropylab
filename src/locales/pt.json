@@ -26,7 +26,7 @@
   "beta.disclaimerText": "O EntropyLab é experimental e deve ser usado apenas para testes e fins educacionais. Esta ferramenta é destinada ao uso offline somente por usuários avançados. Qualquer uso online ou com fundos reais pode ser perigoso.",
   "beta.understand": "Entendi",
   "noscript.banner": "<strong>JavaScript é necessário</strong> O EntropyLab realiza os cálculos da carteira localmente no seu navegador. Com o JavaScript desativado, a calculadora não consegue derivar chaves nem endereços. Ative o JavaScript e execute este arquivo offline em um computador isolado da internet.",
-  "online.banner": "<strong>Versão online</strong> Não digite frases-semente, chaves privadas ou outros segredos da carteira em um dispositivo conectado à internet. <a href=\"entropylab.html\" download=\"entropylab@{{COMMIT_SHORT}}.html\">Baixar EntropyLab</a> e execute o arquivo HTML offline em um computador confiável e isolado da internet.",
+  "online.banner": "<strong>Versão online</strong> Não digite frases-semente, chaves privadas ou outros segredos da carteira em um dispositivo conectado à internet. <a href=\"entropylab.html\" download=\"entropylab.html\">Baixar EntropyLab</a> e execute o arquivo HTML offline em um computador confiável e isolado da internet.",
   "online.dismissAria": "Dispensar o aviso da versão online",
   "pitch.kicker": "Execute offline · Traga sua própria entropia",
   "pitch.title": "Guarde ou receba bitcoin sem um dispositivo de assinatura.",

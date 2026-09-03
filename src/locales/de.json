@@ -26,7 +26,7 @@
   "beta.disclaimerText": "EntropyLab ist experimentell und sollte nur zu Test- und Lernzwecken verwendet werden. Dieses Tool ist ausschließlich für die Offline-Nutzung durch fortgeschrittene Anwender gedacht. Jede Nutzung online oder mit echten Geldern kann gefährlich sein.",
   "beta.understand": "Ich verstehe",
   "noscript.banner": "<strong>JavaScript ist erforderlich</strong> EntropyLab führt Wallet-Berechnungen lokal in Ihrem Browser aus. Ohne JavaScript kann der Rechner keine Schlüssel oder Adressen ableiten. Aktivieren Sie JavaScript und führen Sie diese Datei anschließend offline auf einem luftgetrennten Computer aus.",
-  "online.banner": "<strong>Online-Version</strong> Geben Sie keine Seed-Phrasen, privaten Schlüssel oder andere Wallet-Geheimnisse auf einem mit dem Internet verbundenen Gerät ein. <a href=\"entropylab.html\" download=\"entropylab@{{COMMIT_SHORT}}.html\">EntropyLab herunterladen</a> und die HTML-Datei offline auf einem vertrauenswürdigen, luftgetrennten Computer ausführen.",
+  "online.banner": "<strong>Online-Version</strong> Geben Sie keine Seed-Phrasen, privaten Schlüssel oder andere Wallet-Geheimnisse auf einem mit dem Internet verbundenen Gerät ein. <a href=\"entropylab.html\" download=\"entropylab.html\">EntropyLab herunterladen</a> und die HTML-Datei offline auf einem vertrauenswürdigen, luftgetrennten Computer ausführen.",
   "online.dismissAria": "Warnung zur Online-Version schließen",
   "pitch.kicker": "Offline ausführen · Eigene Entropie mitbringen",
   "pitch.title": "Bitcoin halten oder empfangen, ohne Signiergerät.",

@@ -299,10 +299,11 @@ const spawnBrowser = (engine, { profile, url, logPath, cwd }) => {
       ];
   const options = { stdio: ["ignore", logFd, logFd] };
   if (engine.kind === "chromium") options.cwd = cwd;
-  const process = spawn(engine.binary, args, options);
+  if (engine.kind === "firefox") options.env = { ...process.env, MOZ_HEADLESS: "1" };
+  const child = spawn(engine.binary, args, options);
   closeSync(logFd);
-  process.on("error", () => {});
-  return process;
+  child.on("error", () => {});
+  return child;
 };
 
 const waitForFile = async (file, timeoutMs) => {

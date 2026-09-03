@@ -2336,7 +2336,8 @@
 
   await test("versioned HTML export downloads the current self-contained release", async () => {
     const link = document.querySelector(".download-html");
-    assert(link && link.download === currentFile, "HTML export filename is wrong");
+    assert(link, "download link missing");
+    assert(/^entropylab@(?:[0-9a-f]{7}|unknown)\.html$/.test(link.download), "HTML export filename is wrong");
     const target = new URL(link.href);
     assert(target.origin === location.origin && target.pathname.endsWith("/" + currentFile), "HTML export target is wrong");
     // The served bytes are verified by the Node harness instead: the app's

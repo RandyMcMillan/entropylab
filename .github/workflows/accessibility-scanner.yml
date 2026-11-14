@@ -18,6 +18,9 @@ jobs:
     # Only smoke the deployed page when the deploy actually succeeded.
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     steps:
       - uses: actions/checkout@v4
       - name: accessibility-scanner
@@ -28,7 +31,7 @@ jobs:
           urls: |
             https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
           repository: ${{ github.repository }}
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ github.token }}
           cache_key: accessibility-scanner-cache.json
       - name: Warn on scanner failure
         if: steps.accessibility-scanner.outcome == 'failure'

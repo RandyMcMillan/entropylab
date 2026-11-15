@@ -260,6 +260,27 @@
 
   await wait(500);
 
+  await test("master fingerprint controls keep accessible names when values are empty", () => {
+    for (const id of ["base-master-fingerprint", "passphrase-master-fingerprint"]) {
+      const button = document.getElementById(id);
+      assert(button, `missing ${id}`);
+      const originalText = button.textContent;
+      const originalDisabled = button.disabled;
+      try {
+        button.textContent = "";
+        button.disabled = true;
+        const labelId = `${id}-label`;
+        const references = button.getAttribute("aria-labelledby")?.split(/\s+/) ?? [];
+        assert(references.includes(labelId) && references.includes(id), `${id} must be named by its visible label and current value`);
+        assert(references.every((reference) => document.getElementById(reference)), `${id} has an unresolved accessible-name reference`);
+        assert(document.getElementById(labelId)?.textContent.trim(), `${id} has no visible naming text`);
+      } finally {
+        button.textContent = originalText;
+        button.disabled = originalDisabled;
+      }
+    }
+  });
+
   await test("workspace badges count fixtures, exclude benches, and preserve tab names", () => {
     equal(workspaceCount("calc"), Number(document.documentElement.dataset.testKeys || 0));
     for (const id of ["msig", "bip85", "sp", "vanity"]) equal(workspaceCount(id), 0);

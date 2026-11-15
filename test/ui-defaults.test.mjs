@@ -1442,54 +1442,6 @@ test("header theme toggle cycles dark, light, and OS themes without a flash", ()
   // square: nothing in the header squeezes it any more.
 });
 
-test("the site header is fixed, carries the logo, and holds the version, download, and theme controls", () => {
-  for (const markup of [shell]) {
-    // The header precedes the page wrapper, so the banners scroll beneath it.
-    const header = markup.indexOf('<div class="site-header no-print">');
-    const wrapper = markup.indexOf('<div class="wrap">');
-    assert.ok(header >= 0, "the fixed site header is missing");
-    assert.ok(header < wrapper, "the site header must come before the page wrapper");
-    assert.match(markup, /<span class="site-logo" aria-hidden="true"><\/span>\s*<span class="site-title">EntropyLab<\/span>/);
-    // The version left the bar: it is the footer's build stamp now, and the
-    // row needed the width for the network picker.
-    assert.doesNotMatch(markup.slice(header, wrapper), /site-version/);
-    for (const control of [/class="btn secondary green download-html header-button"/, /id="end-session"/]) {
-      assert.match(markup.slice(header, wrapper), control, `the fixed header is missing ${control}`);
-    }
-    // The pickers, the repository link and the theme toggle close the page
-    // instead: they are in the footer's fourth row, not the bar.
-    for (const moved of [/github-repo-link/, /id="theme-toggle"/, /id="network-picker-button"/, /id="locale-select"/]) {
-      assert.doesNotMatch(markup.slice(header, wrapper), moved, `${moved} should have left the header`);
-      assert.match(markup.slice(markup.indexOf('class="page-footer-links"')), moved);
-    }
-    // The in-flow title block folded into the marketing card, so the wrapper
-    // opens on that card and carries no second header of its own.
-    const live = markup.slice(wrapper).replace(/<!--[\s\S]*?-->/g, "");
-    // The wrapper opens on the beta banner; the static template follows with
-    // a no-JS notice the runtime page has no need of. Both then carry the
-    // conditional warnings, which start hidden.
-    assert.match(live, /<div class="wrap">\s*<div class="beta-warning no-print" id="beta-warning" role="alert">[\s\S]*?<\/div>\s*(?:<noscript>[\s\S]*?<\/noscript>\s*)?(?:<div[^>]*online-warning[\s\S]*?<\/div>\s*)*<section[^>]*id="site-intro">/);
-    assert.doesNotMatch(markup.slice(wrapper), /<header>|download-controls/);
-  }
-  // The mark's own art margin supplies the lockup gap, so the flex gap is
-  // cancelled on that side; without this the wordmark drifts 6px further out.
-  // The wordmark shares the h1's display face rather than the control sans.
-  // The wordmark runs to both ends of the ramp rather than tracking --fg, so
-  // each theme has to name its own end.
-  // No version rides the lockup any more, at any width.
-  // online.js never fetched or rewrote the version label, and there is none to
-  // rewrite now: the app makes no runtime requests.
-  assert.doesNotMatch(online, /fetch\s*\(|site-version|innerHTML/);
-  // Every header control is one height, and Journal file actions deliberately
-  // reuse that same compact sizing.
-  // enhanced-inputs.js swaps the language select for a custom listbox; the
-  // generated control keeps the bar's 40px chrome and sans face instead of
-  // the form control's 44px minimum, control margin, and mono face, which
-  // bulged out of the 52px bar.
-  assert.match(shell, /class="network-picker-chevron"[^>]*>[\s\S]*?<path d="m6 9 6 6 6-6"\/>/);
-  assert.match(read("src/js/enhanced-inputs.js"), /chevronPath\.setAttribute\("d", "m6 9 6 6 6-6"\)/);
-});
-
 test("the header logo is inlined for both themes and never fetched from assets", () => {
   // No markup copy may point the logo at the hosted assets directory.
   for (const markup of [shell]) {

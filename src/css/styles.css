@@ -175,7 +175,7 @@
   --selection-accent-ink: #b36200; /* 4.5:1 on white: the brightest orange that still clears AA */
   --danger: #b42318;
   --danger-bright: #d92d20;
-  --ok: #4f7a3a;
+  --ok: #42672f; /* 5:1 on the light green control ground */
   --ok-bright: #167e32;
   --blue: #245d8f;
   --blue-bright: #1769d6; /* 5.2:1 on white */

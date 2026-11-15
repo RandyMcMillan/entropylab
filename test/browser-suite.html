@@ -281,6 +281,51 @@
     }
   });
 
+  await test("page content uses semantic header, main, and footer landmarks", () => {
+    const header = document.querySelector("header");
+    const main = document.querySelector("main");
+    const footer = document.querySelector("footer");
+    assert(header && main && footer, "a page landmark is missing");
+    for (const id of ["site-intro", "workspace", "sources", "important", "security-log"]) {
+      assert(main.contains(document.getElementById(id)), `${id} is outside the main landmark`);
+    }
+    assert(footer.contains(document.getElementById("network-picker")), "footer content is outside its landmark");
+  });
+
+  await test("dice entry has a programmatically associated visible label", () => {
+    const field = document.getElementById("dice");
+    const label = document.getElementById("dice-label");
+    assert(field && label && label.tagName === "LABEL", "dice field or label is missing");
+    equal(label.control, field);
+    assert(Array.from(field.labels).includes(label), "the dice field does not expose its label");
+  });
+
+  await test("light-theme download control text meets normal-text contrast", () => {
+    const root = document.documentElement;
+    const previousTheme = root.getAttribute("data-theme");
+    root.setAttribute("data-theme", "light");
+    try {
+      const control = document.getElementById("download-html");
+      assert(control, "download control is missing");
+      const parseRgb = (value) => {
+        const channels = value.match(/[\d.]+/g)?.slice(0, 3).map(Number);
+        return channels?.length === 3 ? channels : null;
+      };
+      const foreground = parseRgb(getComputedStyle(control).color);
+      const background = parseRgb(getComputedStyle(control).backgroundColor);
+      assert(foreground && background, "computed control colors are not RGB values");
+      const luminance = ([red, green, blue]) => [red, green, blue]
+        .map((channel) => channel / 255)
+        .map((channel) => channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4)
+        .reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
+      const [lighter, darker] = [luminance(foreground), luminance(background)].sort((a, b) => b - a);
+      assert((lighter + 0.05) / (darker + 0.05) >= 4.5, "download control text falls below 4.5:1 contrast");
+    } finally {
+      if (previousTheme === null) root.removeAttribute("data-theme");
+      else root.setAttribute("data-theme", previousTheme);
+    }
+  });
+
   await test("workspace badges count fixtures, exclude benches, and preserve tab names", () => {
     equal(workspaceCount("calc"), Number(document.documentElement.dataset.testKeys || 0));
     for (const id of ["msig", "bip85", "sp", "vanity"]) equal(workspaceCount(id), 0);

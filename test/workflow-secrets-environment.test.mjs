@@ -59,10 +59,10 @@ test("every job that reads a repository secret runs in the release environment",
   }
 });
 
-test("the accessibility scanner uses a job-scoped token to file findings", () => {
+test("the accessibility scanner can file findings and save its cache", () => {
   const workflow = workflows.find(({ name }) => name === "accessibility-scanner.yml")?.text ?? "";
   const job = jobsOf(workflow).find(({ job: name }) => name === "interop")?.block ?? "";
-  assert.match(job, /^ {4}permissions:\n {6}contents: read\n {6}issues: write$/m);
+  assert.match(job, /^ {4}permissions:\n {6}contents: write\n {6}issues: write$/m);
   assert.match(job, /token: \$\{\{\s*github\.token\s*\}\}/);
   assert.doesNotMatch(job, /secrets\.GH_TOKEN/);
 });

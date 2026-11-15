@@ -300,26 +300,51 @@
     assert(Array.from(field.labels).includes(label), "the dice field does not expose its label");
   });
 
-  await test("light-theme download control text meets normal-text contrast", () => {
+  await test("reported light-theme text meets normal-text contrast", async () => {
     const root = document.documentElement;
     const previousTheme = root.getAttribute("data-theme");
     root.setAttribute("data-theme", "light");
     try {
-      const control = document.getElementById("download-html");
-      assert(control, "download control is missing");
-      const parseRgb = (value) => {
-        const channels = value.match(/[\d.]+/g)?.slice(0, 3).map(Number);
-        return channels?.length === 3 ? channels : null;
+      await wait(300);
+      const context = document.createElement("canvas").getContext("2d", { willReadFrequently: true });
+      assert(context, "canvas is unavailable");
+      const pixel = () => Array.from(context.getImageData(0, 0, 1, 1).data);
+      const paint = (color) => {
+        context.fillStyle = color;
+        context.fillRect(0, 0, 1, 1);
       };
-      const foreground = parseRgb(getComputedStyle(control).color);
-      const background = parseRgb(getComputedStyle(control).backgroundColor);
-      assert(foreground && background, "computed control colors are not RGB values");
       const luminance = ([red, green, blue]) => [red, green, blue]
         .map((channel) => channel / 255)
         .map((channel) => channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4)
         .reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
-      const [lighter, darker] = [luminance(foreground), luminance(background)].sort((a, b) => b - a);
-      assert((lighter + 0.05) / (darker + 0.05) >= 4.5, "download control text falls below 4.5:1 contrast");
+      const targets = [
+        document.getElementById("download-html"),
+        document.querySelector("#beta-warning strong"),
+        document.querySelector("#online-warning strong"),
+        document.querySelector("#online-warning a"),
+        document.getElementById("site-kicker"),
+        document.getElementById("workspace-more"),
+        ...document.querySelectorAll("#dice-meta span"),
+        ...document.querySelectorAll("#sources a"),
+        document.getElementById("beta-disclaimer-title"),
+      ];
+      const devWarning = document.querySelector("#dev-build-warning strong");
+      if (devWarning) targets.push(devWarning);
+      for (const element of targets) {
+        assert(element, "a reported contrast target is missing");
+        const backgrounds = [];
+        for (let node = element; node; node = node.parentElement) backgrounds.push(getComputedStyle(node).backgroundColor);
+        context.clearRect(0, 0, 1, 1);
+        for (const background of backgrounds.reverse()) paint(background);
+        const background = pixel();
+        context.clearRect(0, 0, 1, 1);
+        paint(getComputedStyle(element).color);
+        const foreground = pixel();
+        assert(background[3] === 255 && foreground[3] === 255, "contrast colors must be opaque");
+        const [lighter, darker] = [luminance(foreground), luminance(background)].sort((a, b) => b - a);
+        const ratio = (lighter + 0.05) / (darker + 0.05);
+        assert(ratio >= 4.5, `${element.id || element.closest("[id]")?.id} text contrast is ${ratio.toFixed(2)}:1`);
+      }
     } finally {
       if (previousTheme === null) root.removeAttribute("data-theme");
       else root.setAttribute("data-theme", previousTheme);

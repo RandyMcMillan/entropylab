@@ -171,10 +171,10 @@
   --muted: #444444;
   --faint: #666666;
   --border: #c9c9c9;
-  --accent: #b86f1c;
-  --selection-accent-ink: #b36200; /* 4.5:1 on white: the brightest orange that still clears AA */
+  --accent: #884b08;
+  --selection-accent-ink: #703a06; /* hover lettering remains legible on tinted surfaces */
   --danger: #b42318;
-  --danger-bright: #d92d20;
+  --danger-bright: #a92118;
   --ok: #42672f; /* 5:1 on the light green control ground */
   --ok-bright: #167e32;
   --blue: #245d8f;

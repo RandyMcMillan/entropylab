@@ -59,6 +59,23 @@ test("every job that reads a repository secret runs in the release environment",
   }
 });
 
+test("the accessibility scanner uses a job-scoped token to file findings", () => {
+  const workflow = workflows.find(({ name }) => name === "accessibility-scanner.yml")?.text ?? "";
+  const job = jobsOf(workflow).find(({ job: name }) => name === "interop")?.block ?? "";
+  assert.match(job, /^ {4}permissions:\n {6}contents: read\n {6}issues: write$/m);
+  assert.match(job, /token: \$\{\{\s*github\.token\s*\}\}/);
+  assert.doesNotMatch(job, /secrets\.GH_TOKEN/);
+});
+
+test("manual scanner runs on rock target the preview, release scans target Pages", () => {
+  const workflow = workflows.find(({ name }) => name === "accessibility-scanner.yml")?.text ?? "";
+  const job = jobsOf(workflow).find(({ job: name }) => name === "interop")?.block ?? "";
+  assert.match(job, /urls:\s*\|\n\s+\$\{\{\s*github\.event_name == 'workflow_dispatch'/);
+  assert.ok(job.includes("github.ref == 'refs/heads/rock'"), "only manual rock runs switch to the preview");
+  assert.ok(job.includes("https://preview.entropylab.online/"), "manual rock scans use the deployed preview");
+  assert.ok(job.includes("github.io"), "release scans continue to use GitHub Pages");
+});
+
 test("no job holding the release environment can run on a pull request", () => {
   for (const { workflow, job, block } of secretJobs) {
     const { text } = workflows.find(({ name }) => name === workflow);

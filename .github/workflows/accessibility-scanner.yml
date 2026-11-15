@@ -1,0 +1,39 @@
+name: accessibility-scanner.yml
+
+on:
+  workflow_run:
+    workflows: [Release assets]
+    types: [completed]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  interop:
+    # Only smoke the deployed page when the deploy actually succeeded.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: accessibility-scanner
+        id: accessibility-scanner
+        continue-on-error: true
+        uses: github/accessibility-scanner@v3.5.2
+        with:
+          # Manual checks on rock scan the preview; release checks scan Pages.
+          urls: |
+            ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/rock' && 'https://preview.entropylab.online/' || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
+          repository: ${{ github.repository }}
+          token: ${{ github.token }}
+          cache_key: accessibility-scanner-cache.json
+      - name: Warn on scanner failure
+        if: steps.accessibility-scanner.outcome == 'failure'
+        run: echo "::warning::Accessibility scanner failed; see the scanner step for details."
